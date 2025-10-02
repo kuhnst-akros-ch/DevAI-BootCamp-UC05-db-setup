@@ -13,6 +13,7 @@
 Clone this repo with repository [mcp-alchemy](https://github.com/runekaagaard/mcp-alchemy) as submodule:
 ```shell
 git clone --recurse-submodules https://github.com/kuhnst-akros-ch/DevAI-BootCamp-UC05-db-setup.git
+cd DevAI-BootCamp-UC05-db-setup
 ```
 
 ### Optional Changes
@@ -71,6 +72,8 @@ docker compose up -d
 ```shell
 env $(grep -v '^#' .env | xargs) \
     sh -c '
+        echo "Copy the following JSON output :"
+        echo
         sed \
             -e "s#/absolute/path/to/uv#$(which uv)#" \
             -e "s#/absolute/path/to/mcp-alchemy/mcp_alchemy#$(pwd)/mcp-alchemy/mcp_alchemy#" \
@@ -82,4 +85,14 @@ env $(grep -v '^#' .env | xargs) \
     '
 ```
 
-and copy the output to your Cline config file, e.g. `~/.cline/data/settings/cline_mcp_settings.json`.
+and copy the final JSON output.
+
+### Cline Configuraion in IDE
+
+In your IDE:
+1. Open Cline
+2. Click the ![Hamburger button](https://en.wikipedia.org/wiki/Hamburger_button#/media/File:Hamburger_icon.svg "Hamburger button") for "MCP Servers"
+3. Switch to the "Configure" tab
+4. Click on "Configure MCP Servers" and the JSON config file will open
+5. Overwrite the file content with the copied JSON from last step
+6. Cline will quickly show the 

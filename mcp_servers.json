@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "example_db.postgres": {
+    "example_db": {
       "command": "/absolute/path/to/uv",
       "args": [
         "run",
@@ -9,7 +9,7 @@
         "server.py"
       ],
       "env": {
-        "DB_URL": "postgresql+psycopg2://DB_USER:DB_PASSWORD@127.0.0.1:HOST_PORT/DB_NAME"
+        "DB_URL": "postgresql://DB_USER:DB_PASSWORD@127.0.0.1:HOST_PORT/DB_NAME"
       },
       "autoApprove": ["all_table_names"]
     }
