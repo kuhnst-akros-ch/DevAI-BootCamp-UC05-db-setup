@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "example_db.postgres": {
+      "command": "/absolute/path/to/uv",
+      "args": [
+        "run",
+        "--directory", "/absolute/path/to/mcp-alchemy/mcp_alchemy",
+        "--with", "psycopg2-binary",
+        "server.py"
+      ],
+      "env": {
+        "DB_URL": "postgresql+psycopg2://DB_USER:DB_PASSWORD@127.0.0.1:HOST_PORT/DB_NAME"
+      },
+      "autoApprove": ["all_table_names"]
+    }
+  }
+}

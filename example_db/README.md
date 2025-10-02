@@ -9,20 +9,20 @@ For the [UC05](https://obviousworks.notion.site/UC05-Empower-your-IDE-with-conte
 of the [AI Developer Bootcamp](https://www.obviousworks.ch/en/trainings/ai-developer-bootcamp/)
 use [example_tables.sql](https://obviousworks.notion.site/UC05-Empower-your-IDE-with-context-Model-Context-Protocol-MCP-AI-can-interact-with-nearly-eve-17e2c8dc714480bcb631d5438dc2ebde#1982c8dc714480589be9cf1a678d08b0).
 3. Start:
-   ```shell
-   docker compose up -d
-   ```
+```shell
+docker compose up -d
+```
 4. Wait for health to turn `healthy`:
-   ```shell
-   docker compose ps
-   ```
+```shell
+docker compose ps
+```
 5. Run this to test connection (use credentials from [.env](.env)):
-   ```shell
-   docker run -it \
-    --add-host=host.docker.internal:host-gateway \
-    postgres:alpine \
-    psql "postgresql://app:app@host.docker.internal:5432/appdb"
-   ```
+```shell
+docker run -it \
+--add-host=host.docker.internal:host-gateway \
+postgres:alpine \
+psql "postgresql://app:app@host.docker.internal:5432/appdb" -c 'SELECT version();'
+```
 
 ## Schema Changes
 
@@ -33,6 +33,6 @@ docker compose down
 sudo find ./db_data -mindepth 1 ! -name '.gitignore' -delete
 ```
 Then start again with
-   ```shell
-   docker compose up -d
-   ```
+```shell
+docker compose up -d
+```
