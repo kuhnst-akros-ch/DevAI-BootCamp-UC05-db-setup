@@ -19,10 +19,12 @@ docker compose ps
 5. Run this to test connection (uses credentials from [.env](.env)):
 ```shell
 env $(grep -v '^#' .env | xargs) \
-    docker run -it \
-        --add-host=host.docker.internal:host-gateway \
-        postgres:alpine \
-        psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:$HOST_PORT/$DB_NAME" -c 'SELECT version();'
+    sh -c '
+        docker run -it \
+            --add-host=host.docker.internal:host-gateway \
+            postgres:alpine \
+            psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:$HOST_PORT/$DB_NAME" -c "SELECT version();"
+    '
 ```
 
 ## Schema Changes

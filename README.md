@@ -13,7 +13,6 @@ https://astral.sh/uv
 ### Clone Repositories
 
 Clone this repo with repository [mcp-alchemy](https://github.com/runekaagaard/mcp-alchemy) as submodule:
-
 ```shell
 git clone --recurse-submodules https://github.com/kuhnst-akros-ch/DevAI-BootCamp-UC05-db-setup.git
 ```
@@ -21,7 +20,6 @@ git clone --recurse-submodules https://github.com/kuhnst-akros-ch/DevAI-BootCamp
 ### Start Example Database
 
 Start the database in docker with:
-
 ```shell
 docker compose -f example_db/docker-compose.yml up -d
 ```
@@ -45,10 +43,12 @@ docker compose -f example_db/docker-compose.yml ps
 Run this to test connection:
 ```shell
 env $(grep -v '^#' example_db/.env | xargs) \
-    docker run -it \
-        --add-host=host.docker.internal:host-gateway \
-        postgres:alpine \
-        psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:$HOST_PORT/$DB_NAME" -c 'SELECT version();'
+    sh -c '
+        docker run -it \
+            --add-host=host.docker.internal:host-gateway \
+            postgres:alpine \
+            psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:${HOST_PORT}/${DB_NAME}" -c "SELECT version();"
+    '
 ```
 
 > Details in [example_db/README.md](example_db/README.md).
@@ -57,12 +57,14 @@ env $(grep -v '^#' example_db/.env | xargs) \
 
 ```shell
 env $(grep -v '^#' example_db/.env | xargs) \
-    sed \
-      -e "s#/absolute/path/to/uv#$(which uv)#" \
-      -e "s#/absolute/path/to/mcp-alchemy/mcp_alchemy#$(pwd)/mcp-alchemy/mcp_alchemy#" \
-      -e "s#DB_USER#$DB_USER#" \
-      -e "s#DB_PASSWORD#$DB_PASSWORD#" \
-      -e "s#HOST_PORT#$HOST_PORT#" \
-      -e "s#DB_NAME#$DB_NAME#" \
-      mcp_servers.postgres.json
+    sh -c '
+        sed \
+            -e "s#/absolute/path/to/uv#$(which uv)#" \
+            -e "s#/absolute/path/to/mcp-alchemy/mcp_alchemy#$(pwd)/mcp-alchemy/mcp_alchemy#" \
+            -e "s#DB_USER#$DB_USER#" \
+            -e "s#DB_PASSWORD#$DB_PASSWORD#" \
+            -e "s#HOST_PORT#$HOST_PORT#" \
+            -e "s#DB_NAME#$DB_NAME#" \
+            mcp_servers.json
+    '
 ```
