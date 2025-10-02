@@ -16,7 +16,7 @@ use [example_tables.sql](https://obviousworks.notion.site/UC05-Empower-your-IDE-
    ```shell
    docker compose ps
    ```
-5. Run this to test connection (use credentials from [.env](./.env)):
+5. Run this to test connection (use credentials from [.env](.env)):
    ```shell
    docker run -it \
     --add-host=host.docker.internal:host-gateway \
