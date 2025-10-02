@@ -15,46 +15,61 @@ Clone this repo with repository [mcp-alchemy](https://github.com/runekaagaard/mc
 git clone --recurse-submodules https://github.com/kuhnst-akros-ch/DevAI-BootCamp-UC05-db-setup.git
 ```
 
+### Optional Changes
+1. Optional: edit `.env` to change credentials or host port.
+2. Optional: Change schema SQL files in `db_init/`.
+   For the [UC05](https://obviousworks.notion.site/UC05-Empower-your-IDE-with-context-Model-Context-Protocol-MCP-AI-can-interact-with-nearly-eve-17e2c8dc714480bcb631d5438dc2ebde)
+   of the [AI Developer Bootcamp](https://www.obviousworks.ch/en/trainings/ai-developer-bootcamp/)
+   use [example_tables.sql](https://obviousworks.notion.site/UC05-Empower-your-IDE-with-context-Model-Context-Protocol-MCP-AI-can-interact-with-nearly-eve-17e2c8dc714480bcb631d5438dc2ebde#1982c8dc714480589be9cf1a678d08b0).
+
 ### Start Example Database
+
+> Source of Example Database: [UC05](https://obviousworks.notion.site/UC05-Empower-your-IDE-with-context-Model-Context-Protocol-MCP-AI-can-interact-with-nearly-eve-17e2c8dc714480bcb631d5438dc2ebde) of [AI Developer Bootcamp](https://www.obviousworks.ch/en/trainings/ai-developer-bootcamp/)
+
 
 Start the database in docker with:
 ```shell
-docker compose -f example_db/docker-compose.yml up -d
+docker compose up -d
 ```
+This spins up a local Postgres DB in Docker and auto-loads your schema from `db_init/*.sql` on first start.
 
-The database will be available with:
-
-| Parameter | Value          |
-|-----------|----------------|
-| host:port | 127.0.0.1:5432 |
-| db-name   | appdb          |
-| user      | app            |
-| password  | app            |
+>The database will be available with `postgresql://app:app@127.0.0.1:5432/appdb`.
 
 #### Test Connection
 
 Wait for health to turn `healthy`:
 ```shell
-docker compose -f example_db/docker-compose.yml ps
+docker compose ps
 ```
 
 Run this to test connection:
 ```shell
-env $(grep -v '^#' example_db/.env | xargs) \
+env $(grep -v '^#' .env | xargs) \
     sh -c '
         docker run --rm -it \
             --add-host=host.docker.internal:host-gateway \
             postgres:alpine \
-            psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:${HOST_PORT}/${DB_NAME}" -c "SELECT version();"
+            psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:$HOST_PORT/$DB_NAME" -c "SELECT version();"
     '
 ```
 
-> Details in [example_db/README.md](example_db/README.md).
+#### Schema Changes
+
+The SQL in `db_init/` runs **only** on first run. To re-apply after changes:
+```shell
+docker compose down
+# Empty ./db_data except .gitignore
+sudo find ./db_data -mindepth 1 ! -name '.gitignore' -delete
+```
+Then start the database again with
+```shell
+docker compose up -d
+```
 
 ### Create your MCP Config for Cline
 
 ```shell
-env $(grep -v '^#' example_db/.env | xargs) \
+env $(grep -v '^#' .env | xargs) \
     sh -c '
         sed \
             -e "s#/absolute/path/to/uv#$(which uv)#" \
@@ -66,3 +81,5 @@ env $(grep -v '^#' example_db/.env | xargs) \
             mcp_servers.json
     '
 ```
+
+and copy the output to your Cline config file, e.g. `~/.cline/data/settings/cline_mcp_settings.json`.
