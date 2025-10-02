@@ -8,8 +8,6 @@
 
 ## Usage
 
-https://astral.sh/uv
-
 ### Clone Repositories
 
 Clone this repo with repository [mcp-alchemy](https://github.com/runekaagaard/mcp-alchemy) as submodule:
@@ -44,7 +42,7 @@ Run this to test connection:
 ```shell
 env $(grep -v '^#' example_db/.env | xargs) \
     sh -c '
-        docker run -it \
+        docker run --rm -it \
             --add-host=host.docker.internal:host-gateway \
             postgres:alpine \
             psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:${HOST_PORT}/${DB_NAME}" -c "SELECT version();"

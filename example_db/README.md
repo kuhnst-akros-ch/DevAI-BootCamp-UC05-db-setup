@@ -20,7 +20,7 @@ docker compose ps
 ```shell
 env $(grep -v '^#' .env | xargs) \
     sh -c '
-        docker run -it \
+        docker run --rm -it \
             --add-host=host.docker.internal:host-gateway \
             postgres:alpine \
             psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:$HOST_PORT/$DB_NAME" -c "SELECT version();"
