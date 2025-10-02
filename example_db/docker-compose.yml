@@ -1,5 +1,5 @@
 services:
-  db:
+  example-db.postgres:
     image: postgres:alpine
     container_name: example_db.postgres
     restart: unless-stopped
@@ -8,9 +8,9 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "${HOST_PORT}:5432"
+      - "${POSTGRES_PORT}:5432"
     volumes:
-      - ./db_data:/var/lib/postgresql
+      - ./db_data/postgres:/var/lib/postgresql
       - ./init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]

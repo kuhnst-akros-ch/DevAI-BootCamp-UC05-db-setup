@@ -44,10 +44,11 @@ docker compose -f example_db/docker-compose.yml ps
 
 Run this to test connection:
 ```shell
-docker run -it \
---add-host=host.docker.internal:host-gateway \
-postgres:alpine \
-psql "postgresql://app:app@host.docker.internal:5432/appdb" -c 'SELECT version();'
+env $(grep -v '^#' example_db/.env | xargs) \
+    docker run -it \
+        --add-host=host.docker.internal:host-gateway \
+        postgres:alpine \
+        psql "postgresql://$DB_USER:$DB_PASSWORD@host.docker.internal:$POSTGRES_PORT/$DB_NAME" -c 'SELECT version();'
 ```
 
 > Details in [example_db/README.md](example_db/README.md).
@@ -61,7 +62,7 @@ env $(grep -v '^#' example_db/.env | xargs) \
       -e "s#/absolute/path/to/mcp-alchemy/mcp_alchemy#$(pwd)/mcp-alchemy/mcp_alchemy#" \
       -e "s#DB_USER#$DB_USER#" \
       -e "s#DB_PASSWORD#$DB_PASSWORD#" \
-      -e "s#HOST_PORT#$HOST_PORT#" \
+      -e "s#POSTGRES_PORT#$POSTGRES_PORT#" \
       -e "s#DB_NAME#$DB_NAME#" \
       mcp_servers.postgres.json
 ```
